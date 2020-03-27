@@ -1,10 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>iosAPP下载</title>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .wxtip{
+            background: rgba(0,0,0,0.8);
+            text-align: center;
+            position: fixed;
+            left:0;
+            top: 0;
+            width:100%;
+            height:100%;
+            z-index: 998;
+            display: none;
+        }
+        .wxtip-icon{
+            width: 52px;
+            height: 67px;
+            background: #eee;
+            display: block;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+        .wxtip-txt{
+            margin-top: 107px;
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+    </style>
 </head>
 <body>
-<a href="itms-services:///?action=download-manifest&url=https://raw.githubusercontent.com/smilWindy/testios/master/ios/manifest.plist">下载ios客户端</a>
-<h1>IOS下载</h1>
+<a href="http://caibaojian.com/test.apk" id="JdownApp">点击下载APP</a>
+<a href="http://caibaojian.com/test.apk" id="JdownApp2" class="btn-warn">点击下载APP2</a>
+<div class="wxtip" id="JweixinTip">
+    <span class="wxtip-icon"></span>
+    <p class="wxtip-txt">点击右上角<br/>选择在浏览器中打开</p>
+</div>
+
+<script>
+
+    function weixinTip(ele){
+        var ua = navigator.userAgent;
+        var isWeixin = !!/MicroMessenger/i.test(ua);
+        if(isWeixin){ ele.onclick=function(e){
+            window.event? window.event.returnValue = false : e.preventDefault();
+            document.getElementById('JweixinTip').style.display='block';
+        }
+        document.getElementById('JweixinTip').onclick=function(){
+            this.style.display='none';
+        }
+        }
+    }
+    var btn1 = document.getElementById('JdownApp');//下载一
+    weixinTip(btn1);
+    var btn2 = document.getElementById('JdownApp2'); //下载二
+    weixinTip(btn2);
+
+
+
+    // goDownload();
+
+    // 去下载
+    function goDownload() {
+        var u = navigator.userAgent, app = navigator.appVersion;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        // 这里是安卓浏览器
+        if (isAndroid) {
+            window.location.href = 'https://192.168.43.172:9999/yzt.apk'; // 跳安卓端下载地址
+        }
+        // 这里是iOS浏览器
+        if (isIOS) {
+            alert("这是ios端");
+            window.location.href = 'itms-services:///?action=download-manifest&url=https://192.168.43.172:9999/yzt.plist'; // 通过plist文件分发ipa应用程序安装
+        }
+
+        // 是微信内部webView
+        if (is_weixn()) {
+            alert("请点击右上角按钮, 点击使用浏览器打开");
+        }
+
+        // 是PC端
+        if (IsPC()) {
+            window.location.href = 'http://www.baidu.com';  // 公司主页
+        }
+    }
+
+    // 是微信浏览器
+    function is_weixn(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function IsPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = ["Android", "iPhone",
+            "SymbianOS", "Windows Phone",
+            "iPad", "iPod"];
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
+</script>
 </body>
 </html>
